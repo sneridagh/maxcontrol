@@ -17,16 +17,32 @@ MAXClient.factory('Contexts', ['$resource', 'MAXHeaders', function($resource, MA
     });
 }]);
 
-MAXClient.factory('MAXHeaders', ['MAXSession', function(MAXSession) {
-    return {'X-Oauth-Username': MAXSession.username,
-            'X-Oauth-Token': MAXSession.oauth_token,
-            'X-Oauth-Scope': 'widgetcli'};
+MAXClient.factory('MAXHeaders', ['MAXSession', '_MAXUI', function(MAXSession, _MAXUI) {
+    var headers = {};
+    if (_MAXUI) {
+        headers = {'X-Oauth-Username': _MAXUI.username,
+                   'X-Oauth-Token': _MAXUI.oauth_token,
+                   'X-Oauth-Scope': 'widgetcli'};
+    } else {
+        headers = {'X-Oauth-Username': MAXSession.username,
+                   'X-Oauth-Token': MAXSession.oauth_token,
+                   'X-Oauth-Scope': 'widgetcli'};
+    }
+    return headers;
 }]);
 
 MAXClient.value('MAXSession', {
     username: '',
     oauth_token: ''
 });
+
+MAXClient.factory('_MAXUI', [function() {
+    if (window._MAXUI !== undefined) {
+        return window._MAXUI;
+    } else {
+        return false;
+    }
+}]);
 
 MAXClient.directive('oauthinfo', [function() {
     return {
