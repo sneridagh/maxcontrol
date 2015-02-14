@@ -11,29 +11,32 @@
 
 var MAXClient = angular.module('MAXClient', []);
 
-MAXClient.factory('Contexts', ['$resource', 'MAXHeaders', function($resource, MAXHeaders) {
-    return $resource('https://max.upcnet.es/contexts', null, {
-        search: {method:'GET', params: {tags:'@tags', hash:'@hash'}, headers:MAXHeaders, isArray: true},
+MAXClient.factory('Contexts', ['$resource', 'MAXInfo', function($resource, MAXInfo) {
+    return $resource(MAXInfo.max_server+'/contexts', null, {
+        search: {method:'GET', params: {tags:'@tags', hash:'@hash'}, headers:MAXInfo.headers, isArray: true},
     });
 }]);
 
-MAXClient.factory('MAXHeaders', ['MAXSession', '_MAXUI', function(MAXSession, _MAXUI) {
-    var headers = {};
+MAXClient.factory('MAXInfo', ['MAXSession', '_MAXUI', function(MAXSession, _MAXUI) {
+    var maxinfo = {};
     if (_MAXUI) {
-        headers = {'X-Oauth-Username': _MAXUI.username,
-                   'X-Oauth-Token': _MAXUI.oauth_token,
-                   'X-Oauth-Scope': 'widgetcli'};
+        maxinfo.headers = {'X-Oauth-Username': _MAXUI.username,
+                           'X-Oauth-Token': _MAXUI.oauth_token,
+                           'X-Oauth-Scope': 'widgetcli'};
+        maxinfo.max_server = _MAXUI.max_server;
     } else {
-        headers = {'X-Oauth-Username': MAXSession.username,
-                   'X-Oauth-Token': MAXSession.oauth_token,
-                   'X-Oauth-Scope': 'widgetcli'};
+        maxinfo.headers = {'X-Oauth-Username': MAXSession.username,
+                           'X-Oauth-Token': MAXSession.oauth_token,
+                           'X-Oauth-Scope': 'widgetcli'};
+        maxinfo.max_server = MAXSession.max_server;
     }
-    return headers;
+    return maxinfo;
 }]);
 
 MAXClient.value('MAXSession', {
     username: '',
-    oauth_token: ''
+    oauth_token: '',
+    max_server: ''
 });
 
 MAXClient.factory('_MAXUI', [function() {
@@ -50,7 +53,7 @@ MAXClient.directive('oauthinfo', [function() {
         controller: function($scope, $element, $attrs, MAXSession) {
             MAXSession.username = $attrs.username;
             MAXSession.oauth_token = $attrs.oauthToken;
-            $attrs.oauthToken = '';
+            MAXSession.max_server = $attrs.maxServer;
         }
     };
 }]);
