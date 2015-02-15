@@ -8,6 +8,12 @@
  *
  * Main module of the application.
  */
+
+var underscore = angular.module('underscore', []);
+underscore.factory('_', function() {
+  return window._;
+});
+
 angular
   .module('maxcontrolApp', [
     'ngAnimate',
@@ -16,7 +22,9 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'MAXClient'
+    'MAXClient',
+    'underscore',
+    // 'ngModel'
   ])
   .constant('AUTH_EVENTS', {
     loginSuccess: 'auth-login-success',
@@ -35,7 +43,8 @@ angular
   .constant('DEVEL_CONFIG', {
     is_development: true,
     username: 'victor.fernandez',
-    oauth_token: 'uj5v4XrWMxGP25CN3pAE39mYCL7cwBMV'
+    oauth_token: 'uj5v4XrWMxGP25CN3pAE39mYCL7cwBMV',
+    max_server: 'https://max.upcnet.es'
   })
   .config(['$routeProvider', 'USER_ROLES', function ($routeProvider, USER_ROLES) {
     $routeProvider
@@ -73,6 +82,7 @@ angular
         $rootScope.username = DEVEL_CONFIG.username;
         Session.token = DEVEL_CONFIG.oauth_token;
         MAXSession.oauth_token = DEVEL_CONFIG.oauth_token;
+        MAXSession.max_server = DEVEL_CONFIG.max_server;
         $rootScope.token = DEVEL_CONFIG.oauth_token;
         Session.userRole = 'admin';
       }
