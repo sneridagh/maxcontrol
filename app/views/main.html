@@ -39,11 +39,11 @@
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" ui-jq="metisMenu" ui-refresh="ctrl.results" id="side-menu">
-                    <li ng-repeat="category in ctrl.categories">
-                        <a class="active" href="index.html"><i class="fa fa-{{category}} fa-fw"></i> {{category}}</a>
+                    <li ng-repeat="category in ctrl.results">
+                        <a class="active" href="index.html"><i class="fa fa-{{category}} fa-fw"></i> {{category.name}}</a>
                         <ul class="nav nav-second-level">
-                            <li ng-repeat="endpoint in ctrl.results[category]">
-                                <a href="flot.html">{{endpoint.name}}</a>
+                            <li ng-repeat="endpoint in category['resources']">
+                                <a href="flot.html">{{endpoint.route_name}}</a>
                             </li>
                         </ul>
                     </li>

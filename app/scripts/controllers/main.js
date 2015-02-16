@@ -11,21 +11,24 @@ angular.module('maxcontrolApp')
   .controller('MainCtrl', ['Session', 'ApiInfo', '_', function (Session, ApiInfo, _) {
     var self = this;
     self.username = Session.username;
-    var res = [];
-    var byCat = {};
-    ApiInfo.query().$promise.then(function (response) {
-      _.each(_.keys(response), function (elem) {res.push(response[elem]);});
-      _.each(res, function (elem) {
-        if (_.isEmpty(byCat[elem.category])) {
-          byCat[elem.category] = [];
-          byCat[elem.category].push(elem);
-        }
-        else {
-          byCat[elem.category].push(elem);
-        }
-      });
-      self.results = byCat;
-      self.categories = _.keys(byCat);
+    // var res = [];
+    // var byCat = {};
+    // ApiInfo.query().$promise.then(function (response) {
+    //   _.each(_.keys(response), function (elem) {res.push(response[elem]);});
+    //   _.each(res, function (elem) {
+    //     if (_.isEmpty(byCat[elem.category])) {
+    //       byCat[elem.category] = [];
+    //       byCat[elem.category].push(elem);
+    //     }
+    //     else {
+    //       byCat[elem.category].push(elem);
+    //     }
+    //   });
+    //   self.results = byCat;
+    //   self.categories = _.keys(byCat);
+    // });
+    ApiInfo.by_category().$promise.then(function (response) {
+      self.results = response;
     });
   }])
 
@@ -36,13 +39,13 @@ angular.module('maxcontrolApp')
         // this.results = Contexts.search();
         // this.results = MAXUtils.sha1('http://ulearn.beta.upcnet.es');
         // this.results = ApiInfo.query();
-        var res = [];
-        var byCat = {};
-        ApiInfo.query().$promise.then(function (response) {
-          _.each(_.keys(response), function (elem) {res.push(response[elem]);});
-          _.each(res, function (elem) {byCat[elem.category] = elem;});
-          self.results = byCat;
-        });
+        // var res = [];
+        // var byCat = {};
+        // ApiInfo.query().$promise.then(function (response) {
+        //   _.each(_.keys(response), function (elem) {res.push(response[elem]);});
+        //   _.each(res, function (elem) {byCat[elem.category] = elem;});
+        //   self.results = byCat;
+        // });
 
     };
     this.results = 'Here the results';
