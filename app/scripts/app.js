@@ -24,7 +24,8 @@ angular
     'ngTouch',
     'MAXClient',
     'underscore',
-    'ui.jq'
+    'ui.jq',
+    'ui.router'
     // 'ngModel'
   ])
   .constant('AUTH_EVENTS', {
@@ -47,33 +48,33 @@ angular
     oauth_token: 'uj5v4XrWMxGP25CN3pAE39mYCL7cwBMV',
     max_server: 'https://max.upcnet.es'
   })
-  .config(['$routeProvider', 'USER_ROLES', function ($routeProvider, USER_ROLES) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
+  .config(['$stateProvider', '$urlRouterProvider', 'USER_ROLES', function ($stateProvider, $urlRouterProvider, USER_ROLES) {
+    $urlRouterProvider.otherwise('/api');
+    $stateProvider
+      .state('api', {
+        url: '/api',
+        templateUrl: 'views/api.html',
+        controller: 'ApiCtrl',
         data: {
           authorizedRoles: [USER_ROLES.admin, USER_ROLES.editor]
         }
       })
-      .when('/login', {
+      .state('login', {
+        url: '/login',
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl',
       })
-      .when('/about', {
+      .state('about', {
+        url: '/about',
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl',
         data: {
           authorizedRoles: [USER_ROLES.all]
         }
-      })
-      .otherwise({
-        redirectTo: '/'
       });
-
   }])
   .run(['$rootScope', '$location', 'AUTH_EVENTS', 'DEVEL_CONFIG', 'AuthService', 'Session', 'MAXSession', function ($rootScope, $location, AUTH_EVENTS, DEVEL_CONFIG, AuthService, Session, MAXSession) {
-    $rootScope.$on('$routeChangeStart', function (event, next) {
+    $rootScope.$on('$stateChangeStart', function (event, next) {
       // Configuration while in development, change constants in 'DEVEL_CONFIG'
       // accordingly
       if (DEVEL_CONFIG.is_development) {
