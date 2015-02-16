@@ -8,7 +8,7 @@
  * Controller of the maxcontrolApp
  */
 angular.module('maxcontrolApp')
-  .controller('MainCtrl', ['Session', 'ApiInfo', '_', '$scope', function (Session, ApiInfo, _, $scope) {
+  .controller('MainCtrl', ['Session', 'ApiInfo', '_', function (Session, ApiInfo, _) {
     var self = this;
     self.username = Session.username;
     var res = [];
@@ -26,10 +26,6 @@ angular.module('maxcontrolApp')
       });
       self.results = byCat;
       self.categories = _.keys(byCat);
-
-      $scope.$broadcast('apiloaded');
-      // $('#side-menu').metisMenu(); // jshint ignore:line
-
     });
   }])
 
@@ -50,27 +46,28 @@ angular.module('maxcontrolApp')
 
     };
     this.results = 'Here the results';
-  }])
+  }]);
 
-.directive('metismenu', ['$timeout', function($timeout) {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-          var applyMenu = function () {
-            $(element).metisMenu();
-          };
-          $timeout(applyMenu, 500);
-            // $timeout(function(){
-            //   // debugger
-            //     $(element).metisMenu({toggle:true});
-            // }, 0, false);
+// Experiments amb directives per plugins de jq. Al final ui-jq rocks!
+// .directive('metismenu', ['$timeout', function($timeout) {
+//     return {
+//         restrict: 'A',
+//         link: function(scope, element, attrs) {
+//           var applyMenu = function () {
+//             $(element).metisMenu();
+//           };
+//           $timeout(applyMenu, 500);
+//             // $timeout(function(){
+//             //   // debugger
+//             //     $(element).metisMenu({toggle:true});
+//             // }, 0, false);
 
-            // scope.$on('apiloaded', function () {
-            // scope.$watch('results', function(){
-                // $timeout(function(){
-                //     $(element).metisMenu({toggle:true});
-                // }, 1000, false);
-            // });
-        }
-    };
-}]);
+//             // scope.$on('apiloaded', function () {
+//             // scope.$watch('results', function(){
+//                 // $timeout(function(){
+//                 //     $(element).metisMenu({toggle:true});
+//                 // }, 1000, false);
+//             // });
+//         }
+//     };
+// }]);

@@ -24,6 +24,7 @@ angular
     'ngTouch',
     'MAXClient',
     'underscore',
+    'ui.jq'
     // 'ngModel'
   ])
   .constant('AUTH_EVENTS', {

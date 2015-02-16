@@ -20,6 +20,7 @@ MAXClient.factory('Contexts', ['$resource', 'MAXInfo', function($resource, MAXIn
 MAXClient.factory('ApiInfo', ['$resource', 'MAXInfo', function($resource, MAXInfo) {
     return $resource(MAXInfo.max_server+'/info/api', null, {
         query: {method:'GET'},
+        by_category: {method:'GET', params: {by_category:'1'}, isArray: true},
     });
 }]);
 
