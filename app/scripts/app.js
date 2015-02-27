@@ -59,6 +59,14 @@ angular
           authorizedRoles: [USER_ROLES.admin, USER_ROLES.editor]
         }
       })
+      .state('api.route_id', {
+        url: '/:route_id',
+        templateUrl: 'views/api_routes.html',
+        controller: 'ApiRoutesCtrl',
+        data: {
+          authorizedRoles: [USER_ROLES.admin, USER_ROLES.editor]
+        }
+      })
       .state('login', {
         url: '/login',
         templateUrl: 'views/login.html',
